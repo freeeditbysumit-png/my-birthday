@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday System | Sumit</title>
+    <style>
+        :root {
+            --primary: #00ffcc;
+            --bg: #0a0a0a;
+            --text: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            border: 2px solid var(--primary);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--primary);
+            background: rgba(0, 255, 204, 0.05);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .status {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: var(--bg);
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="status">> SYSTEM_CHECK: INITIALIZING...</div>
+        <h1>SUMIT_v2026.exe</h1>
+        <p style="opacity: 0.7;">Status: Level 14 Unlocked (Coming Soon)</p>
+        <p>Target Date: 26 May 2026</p>
+        <br>
+        <button class="btn" onclick="celebrate()">EXECUTE WISHES</button>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        function celebrate() {
+            // Neon Confetti effect
+            var count = 200;
+            var defaults = {
+                origin: { y: 0.7 },
+                colors: ['#00ffcc', '#ffffff', '#333333']
+            };
+
+            function fire(particleRatio, opts) {
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
+            }
+
+            fire(0.25, { spread: 26, startVelocity: 55 });
+            fire(0.2, { spread: 60 });
+            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+            
+            document.querySelector('.status').innerText = "> STATUS: HAPPY BIRTHDAY IN ADVANCE!";
+        }
+    </script>
+</body>
+      </html>
+  
