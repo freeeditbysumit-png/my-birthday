@@ -3,109 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Birthday System | Sumit</title>
+    <title>Sumit | 3D Achievement OS</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
         :root {
-            --primary: #00ffcc;
-            --bg: #0a0a0a;
-            --text: #ffffff;
+            --neon-blue: #00f2fe;
+            --neon-purple: #4facfe;
+            --dark-bg: #030303;
+            --font-main: 'Orbitron', sans-serif;
         }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Courier New', Courier, monospace;
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            background-color: var(--dark-bg);
+            font-family: var(--font-main);
+            color: white;
             overflow: hidden;
+            perspective: 2000px; /* Essential for 3D */
         }
 
-        .container {
-            text-align: center;
-            border: 2px solid var(--primary);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px var(--primary);
-            background: rgba(0, 255, 204, 0.05);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-        }
-
-        .status {
-            color: var(--primary);
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            background: transparent;
-            color: var(--primary);
-            border: 1px solid var(--primary);
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-
-        .btn:hover {
-            background: var(--primary);
-            color: var(--bg);
-            box-shadow: 0 0 15px var(--primary);
-        }
-
-        #confetti-canvas {
+        /* Scanline effect */
+        body::before {
+            content: "";
             position: absolute;
-            top: 0;
-            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .scene {
+            width: 90vw;
+            height: 90vh;
+            max-width: 400px;
+            max-height: 600px;
+            perspective: 2000px;
+        }
+
+        /* The 3D Card */
+        .card {
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 15, 15, 0.9);
+            border-radius: 20px;
+            position: relative;
+            transform-style: preserve-3d;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.1s ease-out; /* Smooth movement */
+        }
+
+        /* Internal Holographic Light Effect */
+        .card::after {
+            content: "";
+            position: absolute;
+            inset: -100px;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.2) 0%, transparent 70%);
+            transform: translateZ(-1px);
             pointer-events: none;
         }
+
+        .header {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-bottom: 2px solid rgba(0, 242, 254, 0.5);
+            transform: translateZ(30px); /* Lift element off card */
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: url('YOUR_IMAGE_LINK_HERE') no-repeat center center;
+            background-size: cover;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .profile-info {
+            margin-left: 15px;
+        }
+
+        .name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px var(--neon-blue);
+        }
+
+        .level {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Achievement Section */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transform: translateZ(10px);
+        }
+
+        .section-title {
+            color: var(--neon-purple);
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .achievement-block {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            transform: translateZ(40px); /* Higher 3D effect */
+            transition: 0.3s;
+        }
+
+        .achievement-block:hover {
+            border-color: var(--neon-blue);
+            background: rgba(0, 242, 254, 0.05);
+        }
+
+        .achievement-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            border: 1px solid white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+
+        .python-icon { color: #f7e018; border-color: #f7e018; }
+        .school-icon { color: #fe4f4f; border-color: #fe4f4f; }
+
+        .achievement-details h3 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+            color: white;
+        }
+
+        .achievement-details p {
+            margin: 2px 0 0 0;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Interactive buttons at bottom */
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateZ(20px);
+        }
+
+        .nav-item {
+            color: var(--neon-blue);
+            cursor: pointer;
+            text-shadow: 0 0 5px var(--neon-blue);
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover {
+            color: white;
+            text-shadow: 0 0 10px white;
+        }
+
+        /* Initial Booting Animation Overlay */
+        .boot-screen {
+            position: fixed;
+            inset: 0;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hide-boot {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .glitch {
+            color: white;
+            font-size: 2.5rem;
+            font-weight: bold;
+            position: relative;
+            text-shadow: 0.05em 0 0 rgba(255, 0, 0, 0.75),
+                        -0.025em -0.05em 0 rgba(0, 255, 0, 0.75),
+                        0.025em 0.05em 0 rgba(0, 0, 255, 0.75);
+            animation: glitch-anim 1s infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            14% { text-shadow: 0.05em 0 0 rgba(255,0,0,0.75), -0.025em -0.05em 0 rgba(0,255,0,0.75), 0.025em 0.05em 0 rgba(0,0,255,0.75); }
+            15% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            49% { text-shadow: -0.05em -0.025em 0 rgba(255,0,0,0.75), 0.025em 0.025em 0 rgba(0,255,0,0.75), -0.05em -0.05em 0 rgba(0,0,255,0.75); }
+            50% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            99% { text-shadow: 0.025em 0.05em 0 rgba(255,0,0,0.75), 0.05em 0 0 rgba(0,255,0,0.75), 0 -0.05em 0 rgba(0,0,255,0.75); }
+            100% { text-shadow: -0.025em 0 0 rgba(255,0,0,0.75), -0.025em -0.025em 0 rgba(0,255,0,0.75), -0.025em -0.05em 0 rgba(0,0,255,0.75); }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="status">> SYSTEM_CHECK: INITIALIZING...</div>
-        <h1>SUMIT_v2026.exe</h1>
-        <p style="opacity: 0.7;">Status: Level 14 Unlocked (Coming Soon)</p>
-        <p>Target Date: 26 May 2026</p>
-        <br>
-        <button class="btn" onclick="celebrate()">EXECUTE WISHES</button>
+    <div id="boot-screen" class="boot-screen">
+        <div>
+            <div id="log-text">> SUMIT_OS_v20.26<br>> STATUS: INITIALIZING...<br>> LOADING ACHIEVEMENTS...</div>
+            <br>
+            <div class="glitch">A R C H I V E S</div>
+        </div>
     </div>
 
-    <canvas id="confetti-canvas"></canvas>
-
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <script>
-        function celebrate() {
-            // Neon Confetti effect
-            var count = 200;
-            var defaults = {
-                origin: { y: 0.7 },
-                colors: ['#00ffcc', '#ffffff', '#333333']
-            };
-
-            function fire(particleRatio, opts) {
-                confetti(Object.assign({}, defaults, opts, {
-                    particleCount: Math.floor(count * particleRatio)
-                }));
-            }
-
-            fire(0.25, { spread: 26, startVelocity: 55 });
-            fire(0.2, { spread: 60 });
-            fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+    <div class="scene">
+        <div id="3d-card" class="card">
             
-            document.querySelector('.status').innerText = "> STATUS: HAPPY BIRTHDAY IN ADVANCE!";
-        }
+            <div class="header">
+                <div class="avatar"></div>
+                <div class="profile-info">
+                    <div class="name">SUMIT</div>
+                    <div class="level">Tech_Rank: Advanced Dev. (v14)</div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="section-title">ACHIEVEMENTS: 2025-26</div>
+                
+                <div class="achievement-block">
+                    <div class="achievement-icon python-icon">py</div>
+                    <div class="achievement-details">
+                        <h3>Python Certified</h3>
+                        <p>Programming Hub | ID: 4f8feef40633184<br>Granted: 2026-04-26</p>
+                    </div>
+                </div>
+
+                <div class="achievement-block">
+                    <div class="achievement-icon school-icon">A</div>
+                    <div class="achievement-details">
+                        <h3>Mission BUNIYAAD (2025-27)</h3>
+                        <p>Performance: Grade A in Class<br>SRN: 1800014320</p>
+                    </div>
+                </div>
+
+                <div style="flex-grow: 1;"></div>
+                <p style="font-size: 0.7rem; color: rgba(255,255,255,0.4); text-align: center;">MEMORIES & DIGITAL GIFTS UNLOCKING ON: 26 MAY</p>
+            </div>
+
+            <div class="nav">
+                <div class="nav-item">> MEMORIES</div>
+                <div class="nav-item">> AWARDS</div>
+                <div class="nav-item">> GIFTS</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // 1. Hide boot screen after 3 seconds
+        window.addEventListener('load', () => {
+            const bootScreen = document.getElementById('boot-screen');
+            setTimeout(() => {
+                bootScreen.classList.add('hide-boot');
+            }, 3000);
+        });
+
+        // 2. 3D Tilt Effect on Touch/Mousemove
+        const card = document.getElementById('3d-card');
+        const intensity = 15; // Set lower intensity for subtle tilt on small screens
+
+        document.addEventListener('mousemove', (e) => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const deltaX = (e.clientX - centerX) / centerX;
+            const deltaY = (e.clientY - centerY) / centerY;
+
+            // X-mouse movement corresponds to Y-axis rotation, Y to X rotation
+            const rotateY = deltaX * intensity;
+            const rotateX = -deltaY * intensity; 
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        } );
+
+        // For phone touch interaction
+        document.addEventListener('touchmove', (e) => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const touch = e.touches[0];
+            const deltaX = (touch.clientX - centerX) / centerX;
+            const deltaY = (touch.clientY - centerY) / centerY;
+
+            const rotateY = deltaX * intensity * 1.5; // Slightly more intensity on touch
+            const rotateX = -deltaY * intensity * 1.5;
+
+            card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            
+            // Prevent scrolling while tilting
+            if (e.cancelable) {
+                e.preventDefault();
+            }
+        }, {passive: false} );
+
     </script>
 </body>
-      </html>
-  
+</html>
